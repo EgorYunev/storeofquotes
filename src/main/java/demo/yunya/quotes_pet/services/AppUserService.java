@@ -36,5 +36,4 @@ public class AppUserService {
     public AppUser getUserById(int id) {
         return repo.findAppUserById(id);
     }
-
 }

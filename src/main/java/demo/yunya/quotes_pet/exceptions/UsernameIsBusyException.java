@@ -1,7 +1,7 @@
 package demo.yunya.quotes_pet.exceptions;
 
-public class UsernameIsBusy extends RuntimeException {
-    public UsernameIsBusy() {
+public class UsernameIsBusyException extends RuntimeException {
+    public UsernameIsBusyException() {
         super("Пользователь с таким именем уже существует");
     }
 }

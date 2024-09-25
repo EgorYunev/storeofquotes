@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.relational.core.mapping.Column;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,5 @@ public class AppUser {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Quote> quotes = new ArrayList<>();
-
 
 }

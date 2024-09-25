@@ -1,16 +1,17 @@
 package demo.yunya.quotes_pet.controllers;
 
 import demo.yunya.quotes_pet.DTO.AppUserDto;
-import demo.yunya.quotes_pet.exceptions.UserCantBeFind;
-import demo.yunya.quotes_pet.exceptions.UsernameIsBusy;
+import demo.yunya.quotes_pet.exceptions.*;
 import demo.yunya.quotes_pet.models.AppUser;
 import demo.yunya.quotes_pet.services.AppUserService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@AllArgsConstructor
 public class AppUserController {
 
     private AppUserService service;
@@ -25,7 +26,7 @@ public class AppUserController {
             service.addUser(user);
             return "Пользователь успешно создан!";
         } else {
-            throw new UsernameIsBusy();
+            throw new UsernameIsBusyException();
         }
     }
 
@@ -35,11 +36,12 @@ public class AppUserController {
             AppUser user = AppUser.builder()
                     .username(dto.getUsername())
                     .password(dto.getPassword())
+                    .id(id)
                     .build();
             service.changeUser(user);
             return "Пользовательские данные успешно изменены!";
         } else {
-            throw new UserCantBeFind();
+            throw new UserCantBeFindException();
         }
     }
 
@@ -49,7 +51,7 @@ public class AppUserController {
         if (user != null) {
             return user;
         } else {
-            throw new UserCantBeFind();
+            throw new UserCantBeFindException();
         }
     }
 
@@ -64,7 +66,7 @@ public class AppUserController {
         if (user != null) {
             service.deleteUserByUsername(username);
         } else {
-            throw new UserCantBeFind();
+            throw new UserCantBeFindException();
         }
     }
 
@@ -74,8 +76,7 @@ public class AppUserController {
         if (user != null) {
             return user;
         } else {
-            throw new UserCantBeFind();
+            throw new UserCantBeFindException();
         }
     }
-
 }
