@@ -52,8 +52,8 @@ public class QuoteController {
     }
 
     @DeleteMapping("/delete")
-    public String deleteQuote(@RequestBody int id) {
-        service.deleteQuoteById(id);
+    public String deleteQuote(@RequestBody String id) {
+        service.deleteQuoteById(Integer.parseInt(id));
         return "Цитата успешно удалена";
     }
 
