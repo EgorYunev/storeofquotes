@@ -24,7 +24,7 @@ public class AppUser {
 
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Quote> quotes = new ArrayList<>();
 
 }

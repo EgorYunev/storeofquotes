@@ -64,14 +64,14 @@ public class AppUserController {
     public void deleteUserByUsername(@RequestBody String username) {
         AppUser user = service.getUserByUsername(username);
         if (user != null) {
-            service.deleteUserByUsername(username);
+            service.deleteUserById(user.getId());
         } else {
             throw new UserCantBeFindException();
         }
     }
 
-    @GetMapping("/get-user-by-id")
-    public AppUser getUserById(@RequestBody int id) {
+    @GetMapping("/get-user-by-id/{id}")
+    public AppUser getUserById(@PathVariable int id) {
         AppUser user = service.getUserById(id);
         if (user != null) {
             return user;

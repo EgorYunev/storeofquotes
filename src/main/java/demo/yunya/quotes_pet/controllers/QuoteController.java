@@ -1,9 +1,9 @@
 package demo.yunya.quotes_pet.controllers;
 
-import demo.yunya.quotes_pet.DTO.QuoteDto;
 import demo.yunya.quotes_pet.exceptions.QuoteNotFountException;
 import demo.yunya.quotes_pet.exceptions.UserCantBeFindException;
 import demo.yunya.quotes_pet.models.Quote;
+import demo.yunya.quotes_pet.services.AppUserService;
 import demo.yunya.quotes_pet.services.QuoteService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +17,19 @@ public class QuoteController {
 
     private QuoteService service;
 
-    @PostMapping("/save")
-    public String addQuote(@RequestBody QuoteDto dto) {
+    private AppUserService appUserService;
+
+    @PostMapping("/save/{userid}")
+    public String addQuote(@RequestBody String text, @PathVariable int userid) {
         Quote quote = Quote.builder()
-                .author(dto.getAuthor())
-                .text(dto.getText())
+                .author(appUserService.getUserById(userid))
+                .text(text)
                 .build();
+
         service.addQuote(quote);
+
+        appUserService.addQuoteToUserList(quote, userid);
+
         return "Цитата успешно добавлена";
     }
 
@@ -51,11 +57,12 @@ public class QuoteController {
         return "Цитата успешно удалена";
     }
 
-    @PutMapping("/change/{id}")
-    public String changeQuote(@PathVariable int id, @RequestBody QuoteDto dto) {
+    @PutMapping("/change/{userid}/{id}")
+    public String changeQuote(@PathVariable int id, @RequestBody String text, @PathVariable int userid) {
         Quote quote = Quote.builder()
-                .text(dto.getText())
+                .text(text)
                 .id(id)
+                .author(appUserService.getUserById(userid))
                 .build();
         service.changeQuote(quote);
         return "Цитата успешно изменена";

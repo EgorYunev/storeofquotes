@@ -22,7 +22,7 @@ public class Quote {
 
     private String text;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = AppUser.class)
     private AppUser author;
 
 }
