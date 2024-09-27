@@ -9,4 +9,5 @@ import lombok.Value;
 public class AppUserDto {
     String username;
     String password;
+    String roles;
 }

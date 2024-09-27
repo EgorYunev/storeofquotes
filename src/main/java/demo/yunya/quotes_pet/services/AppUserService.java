@@ -5,9 +5,11 @@ import demo.yunya.quotes_pet.models.Quote;
 import demo.yunya.quotes_pet.repositories.AppUserRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -15,7 +17,10 @@ public class AppUserService {
 
     private AppUserRepo repo;
 
+    private PasswordEncoder encoder;
+
     public void addUser(AppUser user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         repo.save(user);
     }
 
@@ -35,7 +40,12 @@ public class AppUserService {
     }
 
     public AppUser getUserByUsername(String username) {
-        return repo.findAppUserByUsername(username);
+        Optional<AppUser> user = repo.findAppUserByUsername(username);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            return null;
+        }
     }
 
     public List<AppUser> getAllUsers() {

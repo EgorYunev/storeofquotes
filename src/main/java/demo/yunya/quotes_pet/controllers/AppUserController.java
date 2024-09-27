@@ -22,6 +22,7 @@ public class AppUserController {
             AppUser user = AppUser.builder()
                     .username(dto.getUsername())
                     .password(dto.getPassword())
+                    .roles(dto.getRoles())
                     .build();
             service.addUser(user);
             return "Пользователь успешно создан!";
@@ -37,6 +38,7 @@ public class AppUserController {
                     .username(dto.getUsername())
                     .password(dto.getPassword())
                     .id(id)
+                    .roles(dto.getRoles())
                     .build();
             service.changeUser(user);
             return "Пользовательские данные успешно изменены!";
