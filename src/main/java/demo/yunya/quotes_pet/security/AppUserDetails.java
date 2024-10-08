@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class AppUserDetails implements UserDetails {
 
-    private AppUser user;
+    private final AppUser user;
 
     public AppUserDetails(AppUser user) {
         this.user = user;

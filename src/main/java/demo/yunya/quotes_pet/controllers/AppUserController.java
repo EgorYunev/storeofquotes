@@ -2,6 +2,7 @@ package demo.yunya.quotes_pet.controllers;
 
 import demo.yunya.quotes_pet.DTO.AppUserDto;
 import demo.yunya.quotes_pet.exceptions.*;
+import demo.yunya.quotes_pet.log.Log;
 import demo.yunya.quotes_pet.models.AppUser;
 import demo.yunya.quotes_pet.services.AppUserService;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
+@Log
 public class AppUserController {
 
     private AppUserService service;

@@ -2,6 +2,7 @@ package demo.yunya.quotes_pet.controllers;
 
 import demo.yunya.quotes_pet.exceptions.QuoteNotFountException;
 import demo.yunya.quotes_pet.exceptions.UserCantBeFindException;
+import demo.yunya.quotes_pet.log.Log;
 import demo.yunya.quotes_pet.models.Quote;
 import demo.yunya.quotes_pet.services.AppUserService;
 import demo.yunya.quotes_pet.services.QuoteService;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/quotes")
+@Log
 public class QuoteController {
 
     private QuoteService service;
