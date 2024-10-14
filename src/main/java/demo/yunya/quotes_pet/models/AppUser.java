@@ -29,7 +29,7 @@ public class AppUser {
 
     private String roles;
 
-    @ManyToMany
+    @ManyToMany(targetEntity = Quote.class)
     private List<Quote> likesQuotes;
 
     @Override

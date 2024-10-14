@@ -10,7 +10,6 @@ import demo.yunya.quotes_pet.services.AppUserService;
 import demo.yunya.quotes_pet.services.QuoteService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +57,7 @@ public class QuoteController {
 
     @PutMapping("/{id}/{userId}/like")
     public void like(@PathVariable int id, @PathVariable int userId) {
+
         Optional<Quote> quoteOptional = service.getQuoteById(id);
         if (quoteOptional.isPresent()) {
             Quote quote = quoteOptional.get();
