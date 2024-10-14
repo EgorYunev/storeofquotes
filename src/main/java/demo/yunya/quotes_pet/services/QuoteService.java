@@ -6,12 +6,17 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class QuoteService {
 
     private QuoteRepository repo;
+
+    public Optional<Quote> getQuoteById(int id) {
+        return repo.findById(id);
+    }
 
     public void addQuote(Quote quote) {
         repo.save(quote);

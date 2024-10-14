@@ -29,4 +29,18 @@ public class AppUser {
 
     private String roles;
 
+    @ManyToMany
+    private List<Quote> likesQuotes;
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", quotes=" + quotes +
+                ", roles='" + roles + '\'' +
+                ", likesQuotes=" + likesQuotes +
+                '}';
+    }
 }
