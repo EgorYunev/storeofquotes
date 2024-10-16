@@ -37,13 +37,23 @@ public class QuoteController {
         return "Цитата успешно добавлена";
     }
 
+    @RequestMapping(value = "/get-by-id", method = RequestMethod.GET)
+    public Quote getById(@RequestParam int id) {
+        Optional<Quote> op = service.getQuoteById(id);
+        if (op.isPresent()) {
+            return op.get();
+        } else {
+            throw new QuoteNotFountException("id=" + String.valueOf(id));
+        }
+    }
+
     @GetMapping("/get-all")
     public List<Quote> getAllQuotes() {
         return service.getAllQuote();
     }
 
     @GetMapping("/get-all-by-username")
-    public List<Quote> getAllByUsername(@RequestBody String username) {
+    public List<Quote> getAllByUsername(@RequestParam String username) {
         List<Quote> quotes = service.getAllByUsername(username);
         if (quotes == null) {
             throw new UserCantBeFindException();
@@ -77,10 +87,20 @@ public class QuoteController {
         }
     }
 
-    @DeleteMapping("/delete")
-    public String deleteQuote(@RequestBody String id) {
-        service.deleteQuoteById(Integer.parseInt(id));
-        return "Цитата успешно удалена";
+    @DeleteMapping("/{userid}/delete")
+    public String deleteQuote(@PathVariable int userid, @RequestParam int id) {
+        List<Quote> userList = appUserService.getUserById(userid).getQuotes();
+        Optional<Quote> op = service.getQuoteById(id);
+        if (op.isPresent()) {
+            Quote quote = op.get();
+            for (Quote q : userList) {
+                if (quote.equals(q)) {
+                    service.deleteQuoteById(id);
+                    return "Цитата успешно удалена";
+                }
+            }
+        }
+        return "У вас нет прав доступа к этой цитате";
     }
 
     @PutMapping("/change/{userid}/{id}")
