@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="us" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <title>Склад Цитат</title>
+</head>
+
+<body>
+<div class="top">
+    <h1>Склад Цитат</h1>
+</div>
+
+<form th:action="@{/user/save}" method="post">
+    <input type="text" placeholder="Имя пользователя" name="username">
+    <input type="password" placeholder="Пароль" name="password">
+    <button type="submit">Отправить</button>
+</form>
+
+</body>
+</html>

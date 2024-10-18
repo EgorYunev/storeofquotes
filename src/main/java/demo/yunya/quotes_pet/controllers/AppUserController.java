@@ -6,11 +6,12 @@ import demo.yunya.quotes_pet.log.Log;
 import demo.yunya.quotes_pet.models.AppUser;
 import demo.yunya.quotes_pet.services.AppUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/user")
 @AllArgsConstructor
 @Log
@@ -19,7 +20,7 @@ public class AppUserController {
     private AppUserService service;
 
     @PostMapping("/save")
-    public String addUser(@RequestBody AppUserDto dto) {
+    public String addUser(@ModelAttribute AppUserDto dto) {
         if (service.getUserByUsername(dto.getUsername()) == null) {
             AppUser user = AppUser.builder()
                     .username(dto.getUsername())
@@ -27,13 +28,13 @@ public class AppUserController {
                     .roles("USER")
                     .build();
             service.addUser(user);
-            return "Пользователь успешно создан!";
+            return "reg-success";
         } else {
             throw new UsernameIsBusyException();
         }
     }
 
-    @PutMapping("/{id}/change-user")
+    @PostMapping("/{id}/change-user")
     public String changeUser(@PathVariable int id, @RequestBody AppUserDto dto) {
         if (service.getUserById(id) != null) {
             AppUser user = AppUser.builder()

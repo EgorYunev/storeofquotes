@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <title>Document</title>
+</head>
+<body>
+<div class="top">
+    <h1>Склад Цитат</h1>
+    <a class="myprof" href="#">Мой профиль</a>
+</div>
+<form action="#" th:action="@{/quotes/save}" method="post">
+    <input type="text" name="text" placeholder="Введите текст цитаты" required />
+    <button type="submit">Отправить</button>
+</form>
+    <h2 th:text="${message}"></h2>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="us" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <title>Склад Цитат</title>
+</head>
+
+<body>
+    <div class="top">
+        <h1>Склад Цитат</h1>
+        <a class="myprof" href="#">Мой профиль</a>
+    </div>
+    <form action="#" th:action="@{/quotes/save}" method="post">
+        <input type="text" name="text" placeholder="Введите текст цитаты" required />
+        <button type="submit">Отправить</button>
+    </form>
+    <div class="each-quote" th:each="quote:${quotes}">
+        <p class="quote" th:text="${quote.text}">Text</p>
+        <a class="author" th:text="${quote.author.username}" th:href="@{http://localhost:8080/quotes/get-all-by-username(username=${quote.author.username})}">author</a>
+        <div class="like-button">
+            <form th:action="@{/quotes/like(id=${quote.id})}" method="post">
+                <button type="submit">Like</button>
+                <span th:text="${quote.likes}">likes</span>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

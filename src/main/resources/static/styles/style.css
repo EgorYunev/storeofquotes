@@ -1,0 +1,45 @@
+.each-quote {
+    border-style: solid;
+    padding: 10px;
+    margin: 10px;
+    border-color: black;
+    border-width: medium;
+    border-radius: 1em;
+}
+
+p {
+    font-family: sans-serif;
+}
+
+.author {
+    display: block;
+    margin-bottom: 10px;
+}
+
+a {
+    font-family: sans-serif;
+}
+
+.quote {
+    font-size: 30px;
+    font-style: italic;
+}
+
+h1 {
+    display: inline;
+    font-size: 60px;
+}
+
+.top {
+    text-align: center;
+}
+
+.myprof {
+    float: right;
+    display: inline;
+}
+
+h2 {
+    display: block;
+    text-align: center;
+}
