@@ -28,17 +28,15 @@ public class QuoteController {
     private AppUserService appUserService;
 
     @PostMapping("/save")
-    public String addQuote(@RequestParam String text, Model model, Principal principal) {
+    public String addQuote(@RequestParam String text, Principal principal) {
         int userid = appUserService.getUserByUsername(principal.getName()).getId();
         Quote quote = Quote.builder()
                 .author(appUserService.getUserById(userid))
                 .text(text)
                 .build();
         service.addQuote(quote);
-        model.addAttribute("message", "Цитата успешно добавлена!");
-
         appUserService.addQuoteToUserList(quote, userid);
-        return "save";
+        return "success";
     }
 
     @GetMapping("/get-all")
@@ -55,8 +53,7 @@ public class QuoteController {
         List<Quote> quotes = service.getAllByUsername(username);
         if (quotes == null) {
             throw new UserCantBeFindException();
-        }
-        else if (quotes.isEmpty()) {
+        } else if (quotes.isEmpty()) {
             throw new QuoteNotFountException("У пользователя нет сохраненных цитат");
         } else {
             model.addAttribute("quotes", quotes);
@@ -84,23 +81,24 @@ public class QuoteController {
         } else {
             throw new QuoteNotFountException(String.valueOf(id));
         }
-        return "like";
+        return "success";
     }
 
-    @DeleteMapping("/{userid}/delete")
-    public String deleteQuote(@PathVariable int userid, @RequestParam int id) {
-        List<Quote> userList = appUserService.getUserById(userid).getQuotes();
+
+    @PostMapping("/delete")
+    public String deleteQuote(@RequestParam int id, Principal principal) {
+        List<Quote> list = appUserService.getUserByUsername(principal.getName()).getQuotes();
         Optional<Quote> op = service.getQuoteById(id);
-        if (op.isPresent()) {
+        if(op.isPresent()) {
             Quote quote = op.get();
-            for (Quote q : userList) {
-                if (quote.equals(q)) {
+            for (Quote q : list) {
+                if (q.getId() == quote.getId()) {
+                    list.remove(q);
                     service.deleteQuoteById(id);
-                    return "Цитата успешно удалена";
+                    return "success";
                 }
             }
         }
-        return "У вас нет прав доступа к этой цитате";
+        return "failure";
     }
-
 }

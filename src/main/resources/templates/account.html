@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="us" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <title>Склад Цитат</title>
+</head>
+
+<body>
+<div class="top">
+    <h1>Склад Цитат</h1>
+    <a class="myprof" th:href="@{/user/account}">Мой профиль</a>
+</div>
+<form action="#" th:action="@{/quotes/save}" method="post">
+    <input type="text" name="text" placeholder="Введите текст цитаты" required />
+    <button type="submit">Отправить</button>
+</form>
+
+<form class="form-change" th:action="@{/user/change}" method="post">
+    <input type="text" name="username" th:placeholder="${user.username}">
+    <span>Изменить пароль:</span>
+    <input type="text" name="password" placeholder="*****">
+    <button type="submit">Изменить данные</button>
+</form>
+
+<div class="each-quote" th:each="quote:${user.quotes}">
+    <p class="quote" th:text="${quote.text}">Text</p>
+    <p class="author" th:text="${quote.author.username}">author</p>
+    <div class="like-button">
+        <form th:action="@{/quotes/like(id=${quote.id})}" method="post">
+            <button type="submit">Like</button>
+            <span th:text="${quote.likes}">likes</span>
+        </form>
+    </div>
+    <form th:action="@{/quotes/delete(id=${quote.id})}" method="post">
+        <button type="submit">Удалить цитату</button>
+    </form>
+</div>
+
+</body>
+</html>

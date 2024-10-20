@@ -2,6 +2,7 @@ package demo.yunya.quotes_pet.services;
 
 import demo.yunya.quotes_pet.models.Quote;
 import demo.yunya.quotes_pet.repositories.QuoteRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class QuoteService {
         repo.save(quote);
     }
 
+    @Transactional
     public void deleteQuoteById(int id) {
         repo.deleteById(id);
     }

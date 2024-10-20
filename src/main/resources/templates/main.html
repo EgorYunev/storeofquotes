@@ -11,7 +11,7 @@
 <body>
     <div class="top">
         <h1>Склад Цитат</h1>
-        <a class="myprof" href="#">Мой профиль</a>
+        <a class="myprof" th:href="@{/user/account}">Мой профиль</a>
     </div>
     <form action="#" th:action="@{/quotes/save}" method="post">
         <input type="text" name="text" placeholder="Введите текст цитаты" required />
