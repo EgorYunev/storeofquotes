@@ -8,8 +8,8 @@
 </head>
 <body>
 <div class="top">
-  <h1>Склад Цитат</h1>
-  <a class="myprof" th:href="@{/user/account}">Мой профиль</a>
+    <h1><a th:href="@{/quotes/get-all}">Склад Цитат</a></h1>
+    <a class="myprof" th:href="@{/user/account}">Мой профиль</a>
 </div>
 <div class="each-quote" th:each="quote:${quotes}">
   <p class="quote" th:text="${quote.text}">Text</p>

@@ -1,8 +1,5 @@
 package demo.yunya.quotes_pet.controllers;
 
-import demo.yunya.quotes_pet.exceptions.QuoteAlreadyLiked;
-import demo.yunya.quotes_pet.exceptions.QuoteNotFountException;
-import demo.yunya.quotes_pet.exceptions.UserCantBeFindException;
 import demo.yunya.quotes_pet.log.Log;
 import demo.yunya.quotes_pet.models.AppUser;
 import demo.yunya.quotes_pet.models.Quote;
@@ -28,7 +25,7 @@ public class QuoteController {
     private AppUserService appUserService;
 
     @PostMapping("/save")
-    public String addQuote(@RequestParam String text, Principal principal) {
+    public String addQuote(@RequestParam String text, Principal principal, Model model) {
         int userid = appUserService.getUserByUsername(principal.getName()).getId();
         Quote quote = Quote.builder()
                 .author(appUserService.getUserById(userid))
@@ -36,6 +33,7 @@ public class QuoteController {
                 .build();
         service.addQuote(quote);
         appUserService.addQuoteToUserList(quote, userid);
+        model.addAttribute("message", "Цитата добавлена");
         return "success";
     }
 
@@ -52,9 +50,11 @@ public class QuoteController {
     public String getAllByUsername(@RequestParam String username, Model model) {
         List<Quote> quotes = service.getAllByUsername(username);
         if (quotes == null) {
-            throw new UserCantBeFindException();
+            model.addAttribute("message", "Пользователь не найден!");
+            return "error";
         } else if (quotes.isEmpty()) {
-            throw new QuoteNotFountException("У пользователя нет сохраненных цитат");
+            model.addAttribute("message", "У пользователя нет сохраненных цитат");
+            return "error";
         } else {
             model.addAttribute("quotes", quotes);
             return "get-all-by-username";
@@ -71,7 +71,8 @@ public class QuoteController {
             List<Quote> likesQuotes = user.getLikesQuotes();
             for (Quote q : likesQuotes) {
                 if (q.equals(quote)) {
-                    throw new QuoteAlreadyLiked(Integer.toString(quote.getId()));
+                    model.addAttribute("message", "Цитата уже была лайкнута!");
+                    return "error";
                 }
             }
             quote.setLikes(quote.getLikes() + 1);
@@ -79,14 +80,16 @@ public class QuoteController {
             service.addQuote(quote);
             appUserService.changeUser(user);
         } else {
-            throw new QuoteNotFountException(String.valueOf(id));
+            model.addAttribute("message", "Цитата не найдена");
+            return "error";
         }
+        model.addAttribute("message", "Лайк поставлен!");
         return "success";
     }
 
 
     @PostMapping("/delete")
-    public String deleteQuote(@RequestParam int id, Principal principal) {
+    public String deleteQuote(@RequestParam int id, Principal principal, Model model) {
         List<Quote> list = appUserService.getUserByUsername(principal.getName()).getQuotes();
         Optional<Quote> op = service.getQuoteById(id);
         if(op.isPresent()) {
@@ -95,10 +98,12 @@ public class QuoteController {
                 if (q.getId() == quote.getId()) {
                     list.remove(q);
                     service.deleteQuoteById(id);
+                    model.addAttribute("message", "Цитата удалена");
                     return "success";
                 }
             }
         }
-        return "failure";
+        model.addAttribute("message", "У вас нет прав доступа к этой цитате");
+        return "error";
     }
 }

@@ -13,11 +13,7 @@
     <h1><a th:href="@{/quotes/get-all}">Склад Цитат</a></h1>
     <a class="myprof" th:href="@{/user/account}">Мой профиль</a>
 </div>
-<form action="#" th:action="@{/quotes/save}" method="post">
-    <input type="text" name="text" placeholder="Введите текст цитаты" required />
-    <button type="submit">Отправить</button>
-</form>
-<h2>Успешно!</h2>
+<h2>Ошибка</h2>
 <h3 th:text="${message}"></h3>
 </body>
 </html>

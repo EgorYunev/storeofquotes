@@ -6,12 +6,12 @@ import demo.yunya.quotes_pet.log.Log;
 import demo.yunya.quotes_pet.models.AppUser;
 import demo.yunya.quotes_pet.services.AppUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -21,8 +21,10 @@ public class AppUserController {
 
     private AppUserService service;
 
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/save")
-    public String addUser(@ModelAttribute AppUserDto dto) {
+    public String addUser(@ModelAttribute AppUserDto dto, Model model) {
         if (service.getUserByUsername(dto.getUsername()) == null) {
             AppUser user = AppUser.builder()
                     .username(dto.getUsername())
@@ -30,44 +32,38 @@ public class AppUserController {
                     .roles("USER")
                     .build();
             service.addUser(user);
+            model.addAttribute("message", "Регистрация успешна!");
             return "success";
         } else {
-            throw new UsernameIsBusyException();
+            model.addAttribute("message", "Такое имя пользователя уже занято");
+            return "error";
         }
     }
 
-    //TODO доделать изменение пользователя
-
     @PostMapping("/change")
-    public String changeUser(@ModelAttribute AppUserDto dto, Principal principal) {
+    public String changeUser(@ModelAttribute AppUserDto dto, Principal principal, Model model) {
         AppUser user = service.getUserByUsername(principal.getName());
-        if (dto.getUsername() != null || !dto.getUsername().isEmpty()) {
+        if (!dto.getUsername().isEmpty()) {
             user.setUsername(dto.getUsername());
         }
-        if (dto.getPassword() != null || !dto.getPassword().isEmpty()) {
-            user.setPassword(dto.getPassword());
+        if (!dto.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
         service.changeUser(user);
+        model.addAttribute("message", "Пользовательские данные изменены");
         return "success";
     }
 
-    @GetMapping("/get-user-by-username")
-    public AppUser getUserByUsername(@RequestBody String username) {
-        AppUser user = service.getUserByUsername(username);
-        if (user != null) {
-            return user;
-        } else {
-            throw new UserCantBeFindException();
-        }
-    }
-
-    @DeleteMapping("/delete")
-    public void deleteUserByUsername(@RequestBody String username) {
-        AppUser user = service.getUserByUsername(username);
+    @PostMapping("/delete")
+    public String deleteUserByUsername(Model model, Principal principal) {
+        AppUser user = service.getUserByUsername(principal.getName());
         if (user != null) {
             service.deleteUserById(user.getId());
+            model.addAttribute("message", "Пользователь удален");
+            return "success";
         } else {
-            throw new UserCantBeFindException();
+            model.addAttribute("message", "Пользователь не найден");
+            return "error";
         }
     }
 
@@ -78,7 +74,8 @@ public class AppUserController {
             model.addAttribute("user", user);
             return "account";
         } else {
-            throw new UserCantBeFindException();
+            model.addAttribute("message", "Пользователь не найден");
+            return "error";
         }
     }
 }

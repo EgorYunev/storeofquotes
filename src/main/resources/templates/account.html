@@ -10,10 +10,10 @@
 
 <body>
 <div class="top">
-    <h1>Склад Цитат</h1>
+    <h1><a th:href="@{/quotes/get-all}">Склад Цитат</a></h1>
     <a class="myprof" th:href="@{/user/account}">Мой профиль</a>
 </div>
-<form action="#" th:action="@{/quotes/save}" method="post">
+<form th:action="@{/quotes/save}" method="post">
     <input type="text" name="text" placeholder="Введите текст цитаты" required />
     <button type="submit">Отправить</button>
 </form>
@@ -21,8 +21,12 @@
 <form class="form-change" th:action="@{/user/change}" method="post">
     <input type="text" name="username" th:placeholder="${user.username}">
     <span>Изменить пароль:</span>
-    <input type="text" name="password" placeholder="*****">
+    <input type="password" name="password" placeholder="*****">
     <button type="submit">Изменить данные</button>
+</form>
+
+<form th:action="@{/user/delete}" method="post">
+    <button type="submit">Удалить аккаунт</button>
 </form>
 
 <div class="each-quote" th:each="quote:${user.quotes}">
