@@ -17,3 +17,10 @@
 * **Spring boot starter aop**
 * **Spring boot starter data jpa**
 * **Postgres Data base**
+* **Thymeleaf**
+
+### Главная страничка
+<img src="ResourcesForReadme/two.png">
+
+### "Моя страничка"
+<img src="ResourcesForReadme/one.png">
